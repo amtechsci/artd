@@ -53,16 +53,26 @@ if(isset($_POST['submit'])){
 	if($msg==''){
 		if(isset($_GET['id']) && $_GET['id']!=''){
 			if($_FILES['image']['name']!=''){
+			    $check = explode($_FILES['image']['name']);
+                $check = end($check);
+                if($check == 'jpg' or $check == 'png' or $check == 'jpeg'){
 				$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
 				move_uploaded_file($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$image);
 				mysqli_query($con,"update banner set heading1='$heading1',heading2='$heading2',btn_txt='$btn_txt',btn_link='$btn_link',image='$image',show_in='$show_in',order_no='$order_no' where id='$id'");
+                }else{
+				mysqli_query($con,"update banner set heading1='$heading1',heading2='$heading2',btn_txt='$btn_txt',btn_link='$btn_link',show_in='$show_in',order_no='$order_no'  where id='$id'");
+			}
 			}else{
 				mysqli_query($con,"update banner set heading1='$heading1',heading2='$heading2',btn_txt='$btn_txt',btn_link='$btn_link',show_in='$show_in',order_no='$order_no'  where id='$id'");
 			}
 		}else{
+		    $check = explode($_FILES['image']['name']);
+            $check = end($check);
+            if($check == 'jpg' or $check == 'png' or $check == 'jpeg'){
 			$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
 			move_uploaded_file($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$image);
 			mysqli_query($con,"insert into banner(heading1,heading2,btn_txt,btn_link,image,show_in,status,order_no) values('$heading1','$heading2','$btn_txt','$btn_link','$image','$show_in','1','$order_no')");
+            }
 		}
 		header('location:banner.php');
 		die();
