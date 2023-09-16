@@ -3,7 +3,7 @@
             <div class="footer-inner bg-white">
                <div class="row" >
                   <div class="col">
-               Copyright &copy; <?php echo date('Y');?>  Glamcos| All Rights Reserved Designed by Art
+               Copyright &copy; <?php echo date('Y');?>  Art| All Rights Reserved Designed by Art
                   </div>
                   
                </div>

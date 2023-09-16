@@ -109,17 +109,17 @@
         <div class="ishiproduct-block page-width">
 <div class="tab-content">
             <div class="row tab_content tab-pane active">
-              <div class="owl-carousel owl-theme grid grid--uniform grid--view-items products-display productblock1-at">
+              <!--<div class="owl-carousel owl-theme grid grid--uniform grid--view-items products-display productblock1-at">-->
 <?php
 $cat = towquery("SELECT * FROM categories");
 while($catf = towfetch($cat)){
 ?>
-<div class="item grid__item grid__item--1577101384762 ">
+<div class="">
 <div class="row p-50">
             <div class="Aboutus-information">
-                <div class="Aboutus-banner col-lg-6 col-md-12">
+                <div class="Aboutus-banner d-none d-md-block col-lg-6 col-md-12">
                     <p class="titleP titlemobile"><?=$catf['categories']?></p>
-                    <img src="/upload/<?=$catf['cat_img']?>" data-sizes="auto">
+                    <a href="shop.php?id=<?=$catf['id']?>"><img src="/upload/<?=$catf['cat_img']?>" data-sizes="auto"></a>
                 </div>
                 <div class="information-container col-lg-6 col-md-12">
                     <div class="title-container text-left text-center" style="margin-bottom:0;">
@@ -131,13 +131,13 @@ while($catf = towfetch($cat)){
                     </div>
                     <div class="row">
 <?php
-$pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE best_seller=1 AND categories_id={$catf['id']} ORDER BY id DESC LIMIT 2");
+$pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE best_seller=1 AND categories_id={$catf['id']} ORDER BY product.updated_at DESC LIMIT 2");
         while($prof = towfetch($pro)){
 ?>
                         <div class="col-md-6">
                             <div class="grid-view-item">
   <div class="grid-view-item__link grid-view-item__image-container">
-    <div class="grid-view-item__image-wrapper js">
+    <div class="grid-view-item__image-wrapper js" style="width: 100%;">
         <a href="product.php?id=<?=$prof['id']?>">
           <div class="image-inner">
             <div class="reveal">
@@ -152,14 +152,14 @@ $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.pric
                    $eximgf = $prof['image'];
                }
                ?>
-               <img class="extra-img" src="/upload/<?=$eximgf?>" alt="Artdarshan" />
+               <!--<img class="extra-img" src="/upload/<?=$eximgf?>" alt="Artdarshan" />-->
             </div>
           </div>
         </a>
       </div>
     
       <div class="product-description">
-        <a href="product.php">
+        <a href="product.php?id=<?=$prof['id']?>">
           <div class="product-detail">
             <div class="h4 grid-view-item__title"><?php $out = strlen($prof['name']) > 20 ? substr($prof['name'],0,20)."..." : $prof['name']; echo $out;?></div> <?=$prof['size_id'];?>           
           </div> 
@@ -189,7 +189,7 @@ $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.pric
                     </div>
                     <br><br>
                     <div class="about-btn">
-                        <a href="category.php?id=<?=$catf['id']?>" class="btn">
+                        <a href="shop.php?id=<?=$catf['id']?>" class="btn">
                             Explore collection
                             <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-arrow-right" viewBox="0 0 20 8"><path d="M4.814 7.555C3.95 6.61 3.2 5.893 2.568 5.4 1.937 4.91 1.341 4.544.781 4.303v-.44a9.933 9.933 0 0 0 1.875-1.196c.606-.485 1.328-1.196 2.168-2.134h.752c-.612 1.309-1.253 2.315-1.924 3.018H19.23v.986H3.652c.495.632.84 1.1 1.036 1.406.195.306.485.843.869 1.612h-.743z" fill-rule="evenodd" style="fill:#fff;"></path></svg>
                         </a>
@@ -199,7 +199,7 @@ $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.pric
         </div>
                   </div>
 <?php } ?>
-              </div>
+              <!--</div>-->
             </div>
 </div>
 </div>
@@ -286,16 +286,11 @@ $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.pric
             
           </ul>
         </div>
-        
-        <div class="tab-content">
-            <div class="row tab_content tab-pane active">
-              <div class="owl-carousel owl-theme grid grid--uniform grid--view-items products-display productblock1-1577101364349">
+<div class="row">
 <?php
-$pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE best_seller=2");
-        while($prof = towfetch($pro)){ ?>
-<div class="item grid__item grid__item--1577101384762 ">
-<div class="grid-view-item">
-  <div class="grid-view-item__link grid-view-item__image-container">
+$pro = towquery("SELECT product.id,product.categories_id,product.name,product.mrp,product.price,product.image,product.short_desc,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE best_seller=2  ORDER BY product.updated_at DESC LIMIT 8");
+        while($prof = towfetch($pro)){?>
+  <div class="col-12 col-md-3">
     <div class="grid-view-item__image-wrapper js">
         <a href="product.php?id=<?=$prof['id']?>">
           <div class="image-inner">
@@ -316,9 +311,8 @@ $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.pric
           </div>
         </a>
       </div>
-    
       <div class="product-description">
-        <a href="product.php">
+        <a href="product.php?id=<?=$prof['id']?>">
           <div class="product-detail">
             <div class="h4 grid-view-item__title"><?php $out = strlen($prof['name']) > 20 ? substr($prof['name'],0,20)."..." : $prof['name']; echo $out;?></div> <?=$prof['size_id'];?>           
           </div> 
@@ -342,12 +336,76 @@ $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.pric
         </div>
       </div>
   </div>
-</div>
-                  </div>
 <?php } ?>
-              </div>
-            </div>
+</div>
+      </div>
+</div><br>
+    <div class="ishiproduct-block page-width">
+    
+      <div class="section-header text-center" >
+        <p class="" style="border-bottom:1px solid #000;font-size:20px;">LATEST COLLECTION</p>
+      </div>
+      <div class="section-header text-center">
+        <p style="margin-top:5px;">"Explore Exquisite Works By Master Craftpersons"</p>
+      </div>
+      <div id="ishiproduct-block-carousel" class="logo-bar">
+        <div class="logo-bar__item" >
+          <ul id="products-tab" class="nav nav-tabs products-tab clearfix">
+            
+          </ul>
         </div>
+<div class="row">
+<?php
+$pro = towquery("SELECT product.id,product.categories_id,product.name,product.mrp,product.price,product.image,product.short_desc,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE best_seller=6  ORDER BY product.updated_at DESC LIMIT 8");
+        while($prof = towfetch($pro)){ ?>
+<div class="col-12 col-md-3">
+    <div class="grid-view-item__image-wrapper js">
+        <a href="product.php?id=<?=$prof['id']?>">
+          <div class="image-inner">
+            <div class="reveal">
+              <img 
+               class="grid-view-item__image lazyload  main-img "
+               src="/upload/<?=$prof['image']?>"
+               alt="Artdarshan">
+               <?php $eximg = towquery("SELECT * FROM `product_images` WHERE product_id='{$prof['id']}'");
+               if(townum($eximg) > 0){
+                     $eximgf = towfetch($eximg)['product_images'];
+               }else{
+                   $eximgf = $prof['image'];
+               }
+               ?>
+               <img class="extra-img" src="/upload/<?=$eximgf?>" alt="Artdarshan" />
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="product-description">
+        <a href="product.php?id=<?=$prof['id']?>">
+          <div class="product-detail">
+            <div class="h4 grid-view-item__title"><?php $out = strlen($prof['name']) > 20 ? substr($prof['name'],0,20)."..." : $prof['name']; echo $out;?></div> <?=$prof['size_id'];?>           
+          </div> 
+        </a>
+
+        <div class="product-block">
+          <div class="nm-cartmain add_to_cart_main grid-cart">
+              <div class="product-form__item product-form__item--submit">
+                <b onclick="add_to_cart(this,'<?=$prof['id']?>')" class="addToCart enable btn">
+                    <span class="value instock add_to_cart add_to_cart_<?=$prof['id']?>">
+                  <span class="value">
+                       ADD TO CART
+                  </span>
+                  </span>
+                  <span class="adding adding<?=$prof['id']?>">
+                     adding...
+                   </span>
+                </b>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
+<?php } ?>
+      </div>
       </div>
 </div>
 <script>
@@ -449,6 +507,5 @@ $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.pric
     </div>
     <div id="instafeed" class="instafeed owl-carousel"></div>
 </div>
-<!--<script src="js/instafeed.min.js"></script>-->
 </main>
 <?php include 'foot.php' ?>

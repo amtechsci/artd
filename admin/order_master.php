@@ -38,7 +38,7 @@ isAdmin();
 									</td>
 									<td class="product-name"><?php echo $row['payment_type']?></td>
 
-							 <td class="product-name"><?php if($row['payment_status'] == 'Success'){ ?><span class="btn btn-success">Success </span><?php }else{ ?>
+							 <td class="product-name"><?php if($row['payment_status'] == 'paid'){ ?><span class="btn btn-success">Success </span><?php }else{ ?>
                               <input type="checkbox" value="Success" class="paybtn" data-id="<?php echo $row['id'];  ?>"  >  Pending <?php } ?></td>
 
 									<td class="product-name"><?php if($row['order_status'] == 'Delivered'){ ?> <span class="btn btn-success">Delivered </span><?php }else{ ?>

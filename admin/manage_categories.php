@@ -40,9 +40,9 @@ if(isset($_POST['submit'])){
 	if($msg==''){
 		if(isset($_GET['id']) && $_GET['id']!=''){
 		    if($_FILES['image']['name']!=''){
-		        $check = explode($_FILES['image']['name']);
+		        $check = explode('.',$_FILES['image']['name']);
                 $check = end($check);
-                if($check == 'jpg' or $check == 'png' or $check == 'jpeg'){
+                if($check == 'jpg' or $check == 'png' or $check == 'jpeg' or $check == 'webp'){
 				$cat_img=rand(111111111,999999999).'_'.$_FILES['image']['name'];
 				move_uploaded_file($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$cat_img);
 				mysqli_query($con,"update categories set categories='$categories',cat_img='$cat_img' where id='$id'");
@@ -53,9 +53,9 @@ if(isset($_POST['submit'])){
 				mysqli_query($con,"update categories set categories='$categories' where id='$id'");
 			}
 		}else{
-		    $check = explode($_FILES['image']['name']);
+		    $check = explode('.',$_FILES['image']['name']);
             $check = end($check);
-            if($check == 'jpg' or $check == 'png' or $check == 'jpeg'){
+            if($check == 'jpg' or $check == 'png' or $check == 'jpeg' or $check == 'webp'){
 		    $cat_img = rand(111111111,999999999).'_'.$_FILES['image']['name'];
 			move_uploaded_file($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$cat_img);
 			mysqli_query($con,"insert into categories(categories,cat_img,status) values('$categories','$cat_img','1')");
@@ -64,7 +64,7 @@ if(isset($_POST['submit'])){
             }
 		}
 		header('location:categories.php');
-		die();
+        exit;
 	}
 }
 ?>

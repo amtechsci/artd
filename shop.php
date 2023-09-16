@@ -2,7 +2,7 @@
 <div class="page-container" id="PageContainer">
 <main class="main-content" id="MainContent" role="main">
           		<div class="page-width collection_templete">
-                  <div class="row">
+                  <div class="row d-flex flex-column-reverse">
 <div class="col-md-3 col-sm-12 col-xs-12 normal-sidebar sidebar_content">
 <div id="shopify-section-Ishi_sidebar" class="shopify-section"><div data-section-id="Ishi_sidebar" data-section-type="sidebar-section">
       <div class="left-column collection-left">
@@ -83,7 +83,7 @@
           
 
 <div class="grid grid--uniform grid--view-items products-display">
-    <?php $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE best_seller=1");
+    <?php $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE best_seller=5");
         while($prof = towfetch($pro)){
             ?>
     <div class="grid__item grid__item--Ishi_sidebar">
@@ -168,7 +168,10 @@
 <?php
         if(isset($_GET['q'])){
             $qu = towreal($_GET['q']);
-            $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE name LIKE '%$qu%'");   
+            $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE name LIKE '%$qu%' OR meta_keyword LIKE '%$qu%' OR meta_title LIKE '%$qu%' OR meta_desc LIKE '%$qu%'");   
+        }elseif(isset($_GET['id'])){
+            $id = towreal($_GET['id']);
+            $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE categories_id=$id");   
         }else{
             $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE best_seller=2");
         } 

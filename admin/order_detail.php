@@ -2,18 +2,14 @@
 require('top.inc.php');
 isAdmin();
 
-$sql="SELECT `orders`.*,users.name,users.email,users.mobile FROM `orders` LEFT JOIN `users` ON orders.user_id=users.id where orders.id='".$_GET['oid']."'";
-
+$sql="SELECT `orders`.*,users.first_name,users.email,users.mobile FROM `orders` LEFT JOIN `users` ON orders.user_id=users.id where orders.id='".$_GET['oid']."'";
+// print_r($sql);exit;
 $res=mysqli_query($con,$sql);
 $orow=mysqli_fetch_assoc($res);
 
 // for product Detail
 $prsql="SELECT  order_detail.*,product.name,product.image FROM `order_detail` LEFT JOIN `product` ON product.id=order_detail.product_id   where order_id='".$_GET['oid']."'";
 $prquery=mysqli_query($con, $prsql);
-// $orow=mysqli_fetch_all($prquery);
-// echo "<pre>";
-// print_r($orow);exit;
-
 ?>
 
 
@@ -30,7 +26,7 @@ $prquery=mysqli_query($con, $prsql);
 				    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
      <div class="card">
          <div class="card-header p-4">
-             <a class="pt-2 d-inline-block" href="index.php" data-abc="true">Glamcos</a>
+             <a class="pt-2 d-inline-block" href="index.php" data-abc="true">Artdarshan</a>
              <div class="float-right">
                  <h3 class="mb-0">Order ID : <?php echo$orow['id'];?></h3>
                Oreder Date:  <?=$orow['added_on']?>
@@ -53,12 +49,18 @@ $prquery=mysqli_query($con, $prsql);
                  </div>
                  <div class="col-sm-6 ">
                      <h3 class="text-dark mb-1">Customer Detail</h3>
-                   
-                     <div>Name: <?=$orow['name']?></div>
-                     <div>Email: <?=$orow['email']?></div>
-                     <div>Mobile No: <?=$orow['mobile']?>&nbsp;&nbsp; <?=$orow['op_mobile']?></div>
-                     <div>Address: <?=$orow['address']?></div>
-                     <div>Pincode: <?=$orow['pincode']?></div>
+                   <?php
+                   $add = mysqli_query($con,"SELECT * FROM `address` WHERE id='{$orow['address_id']}'");
+                   if(mysqli_num_rows($add) > 0){ 
+                        $fadd = mysqli_fetch_array($add);
+                        ?>
+                     <div>Name: <?=$fadd['name']?></div>
+                     <div>Mobile No: <?=$fadd['mobile']?></div>
+                     <div>Address: <?php
+                        echo $fadd['address_line1'].', '.$fadd['address_line2'].', '.$fadd['state'].', '; ?>
+                     </div>
+                     <div>Pincode: <?=$fadd['pin_code']?></div>
+                     <?php }?>
                  </div>
              </div>
              <div class="table-responsive-sm">

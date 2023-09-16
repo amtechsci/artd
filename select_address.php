@@ -119,10 +119,10 @@ if(isset($_POST['add_new_add'])){
     border-color: #151515;
 }
 .selectadd{
-    width:45%; float:left;
+    width:45%; float:left; margin-left: 2%;
 }
 .addaddress{
-    width:45%; float:right;
+    width:45%; float:right; margin-right: 2%;
 }
 @media only screen and (max-width: 600px) {
   .selectadd{
@@ -141,14 +141,19 @@ if(isset($_POST['add_new_add'])){
             <div class="section-header text-center">
       <h3>Select a delivery address</h3>
     </div>
-    <form action="checkout.php" method="post">
     <?php
     $a = towquery("SELECT * FROM `address` WHERE uid='{$user['id']}'");
-    if(townum($a) > 0){
-        while($add = towfetch($a)){
-    ?>
-        <div style="background: rgba( 255, 255, 255, 0.25 );
+    if(townum($a) > 0){ ?>
+    <form action="checkout.php" method="post">
+    <div style="background: rgba( 255, 255, 255, 0.25 );
         box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 4px );
+        -webkit-backdrop-filter: blur( 4px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );">
+    <?php while($add = towfetch($a)){ ?>
+        <div style="background: rgba( 255, 255, 255, 0.25 );
+        box-shadow: 0 0px 30px 0 rgba( 31, 38, 135, 0.37 );
         backdrop-filter: blur( 4px );
         -webkit-backdrop-filter: blur( 4px );
         border-radius: 10px;
@@ -171,16 +176,33 @@ if(isset($_POST['add_new_add'])){
                     </div>
                 </div>
         </div>
-    <?php }} ?>
-    <div style="background: rgba( 255, 255, 255, 0.25 );
-        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-        backdrop-filter: blur( 4px );
-        -webkit-backdrop-filter: blur( 4px );
-        border-radius: 10px;
-        border: 1px solid rgba( 255, 255, 255, 0.18 );margin-top: 35px; margin:15px;">
+    <?php } ?>
+    </div>
+        <div style="margin-top:10px; margin-bottom:10px;  padding:15px; background: rgba( 255, 255, 255, 0.25 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 4px );
+            -webkit-backdrop-filter: blur( 4px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );">
+                <h2>Choose Payment Method:</h2>
+                <h4><input type="radio" name="payment_method" value="COD"> Cash on delivery</h4>
+                <h4><input type="radio" name="payment_method" value="ONLINE"> Pay by card/UPI</h4>
+                
                 <input type="submit" name="state" class="btn" style="width:100%;" value="Continue">
-        </div>
+            </div>
     </form>
+    <?php }else{ ?>
+        <!--<div style="background: rgba( 255, 255, 255, 0.25 );box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );backdrop-filter: blur( 4px );-webkit-backdrop-filter: blur( 4px );border-radius: 10px;border: 1px solid -->
+        <!--rgba( 255, 255, 255, 0.18 );">-->
+            <div style="background: rgba( 255, 255, 255, 0.25 );box-shadow: 0 0px 30px 0 rgba( 31, 38, 135, 0.37 );backdrop-filter: blur( 4px );-webkit-backdrop-filter: blur( 4px );border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );margin-top: 35px; margin:15px;">
+                <div class="row" style="padding: 20px;">
+                    <h5 style="margin:0px;">You don't have any previous saved address. Please add new</h5>
+                </div>
+            </div>
+        <!--</div>-->
+    <?php } ?>
+    
         </div>
         <div class="shopify-section addaddress">
             <div class="section-header text-center">

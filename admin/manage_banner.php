@@ -11,7 +11,7 @@ $msg='';
 $order_no='';
 $image_required='required';
 if(isset($_GET['id']) && $_GET['id']!=''){
-	$id=get_safe_value($con,$_GET['id']);
+	$id=towrealarray2($_GET['id']);
 	$image_required='';
 	$res=mysqli_query($con,"select * from banner where id='$id'");
 	$check=mysqli_num_rows($res);
@@ -31,12 +31,12 @@ if(isset($_GET['id']) && $_GET['id']!=''){
 }
 
 if(isset($_POST['submit'])){
-	$heading1=get_safe_value($con,$_POST['heading1']);
-	$heading2=get_safe_value($con,$_POST['heading2']);
-	$btn_txt=get_safe_value($con,$_POST['btn_txt']);
-	$btn_link=get_safe_value($con,$_POST['btn_link']);
-	$show_in=get_safe_value($con,$_POST['show_in']);
-	$order_no=get_safe_value($con,$_POST['order_no']);
+	$heading1=towrealarray2($_POST['heading1']);
+	$heading2=towrealarray2($_POST['heading2']);
+	$btn_txt=towrealarray2($_POST['btn_txt']);
+	$btn_link=towrealarray2($_POST['btn_link']);
+	$show_in=towrealarray2($_POST['show_in']);
+	$order_no=towrealarray2($_POST['order_no']);
 	
 	if(isset($_GET['id']) && $_GET['id']==0){
 		if($_FILES['image']['type']!='image/png' && $_FILES['image']['type']!='image/jpg' && $_FILES['image']['type']!='image/webp' && $_FILES['image']['type']!='image/jpeg'){
@@ -53,9 +53,9 @@ if(isset($_POST['submit'])){
 	if($msg==''){
 		if(isset($_GET['id']) && $_GET['id']!=''){
 			if($_FILES['image']['name']!=''){
-			    $check = explode($_FILES['image']['name']);
-                $check = end($check);
-                if($check == 'jpg' or $check == 'png' or $check == 'jpeg'){
+			    $check = explode('.',$_FILES['image']['name']);
+                $check = strtolower(end($check));
+                if($check == 'jpg' or $check == 'png' or $check == 'jpeg' or $check == 'webp'){
 				$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
 				move_uploaded_file($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$image);
 				mysqli_query($con,"update banner set heading1='$heading1',heading2='$heading2',btn_txt='$btn_txt',btn_link='$btn_link',image='$image',show_in='$show_in',order_no='$order_no' where id='$id'");
@@ -66,12 +66,12 @@ if(isset($_POST['submit'])){
 				mysqli_query($con,"update banner set heading1='$heading1',heading2='$heading2',btn_txt='$btn_txt',btn_link='$btn_link',show_in='$show_in',order_no='$order_no'  where id='$id'");
 			}
 		}else{
-		    $check = explode($_FILES['image']['name']);
-            $check = end($check);
-            if($check == 'jpg' or $check == 'png' or $check == 'jpeg'){
+		    $check = explode('.',$_FILES['image']['name']);
+            $check = strtolower(end($check));
+            if($check == 'jpg' or $check == 'png' or $check == 'jpeg' or $check == 'webp'){
 			$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
 			move_uploaded_file($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$image);
-			mysqli_query($con,"insert into banner(heading1,heading2,btn_txt,btn_link,image,show_in,status,order_no) values('$heading1','$heading2','$btn_txt','$btn_link','$image','$show_in','1','$order_no')");
+			mysqli_query($con,"insert into banner(btn_link,image,show_in,status,order_no) values('$btn_link','$image','$show_in','1','$order_no')");
             }
 		}
 		header('location:banner.php');

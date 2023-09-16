@@ -42,7 +42,7 @@ $res=mysqli_query($con,$sql);
 							<tr>
 							   <td class="serial"><?php echo $i?></td>
 							   <td><?php echo $row['id']?></td>
-							   <td><?php echo $row['name']?></td>
+							   <td><?php echo $row['first_name']?></td>
 							   <td><?php echo $row['email']?></td>
 							   <td><?php echo $row['mobile']?></td>
 							   <td><?php echo $row['added_on']?></td>

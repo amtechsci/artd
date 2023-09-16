@@ -3,29 +3,39 @@ require('connection.inc.php');
 require('functions.inc.php');
 $msg='';
 if(isset($_POST['submit'])){
-$ext=towrealarray2($_POST);
-	$username=$ext['username'];
-   $password=$ext['password'];
-	$sql="select * from admin_users where username='$username' and password='$password'";
-//   echo $sql;
-	$res=mysqli_query($con,$sql);
-	$count=mysqli_num_rows($res);
-	if($count>0){
-		$row=mysqli_fetch_assoc($res);
-		if($row['status']=='0'){
-			$msg="Account deactivated";	
-		}else{
-			$_SESSION['ADMIN_LOGIN']='yes';
-			$_SESSION['ADMIN_ID']=$row['id'];
-			$_SESSION['ADMIN_USERNAME']=$username;
-			$_SESSION['ADMIN_ROLE']=$row['role'];
-			header('location:banner.php');
-			die();
-		}
-	}else{
-		$msg="Please enter correct login details";	
-	}
-	
+    $ext=towrealarray2($_POST);
+    $username = $ext['username'];
+    $password = $ext['password'];
+
+    // Use prepared statement
+    $stmt = $con->prepare("SELECT * FROM admin_users WHERE username=?");
+    $stmt->bind_param("s", $username);
+
+    if($stmt->execute()) {
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if(password_verify($password, $row['password'])) {
+                if($row['status'] == '0') {
+                    $msg = "Account deactivated";
+                } else {
+                    $_SESSION['ADMIN_LOGIN'] = 'yes';
+                    $_SESSION['ADMIN_ID'] = $row['id'];
+                    $_SESSION['ADMIN_USERNAME'] = $username;
+                    $_SESSION['ADMIN_ROLE'] = $row['role'];
+                    header('location:banner.php');
+                    die();
+                }
+            } else {
+                $msg = "Please enter correct login details";
+            }
+        } else {
+            $msg = "Please enter correct login details";
+        }
+    } else {
+        $msg = "Failed to execute query";
+    }
+    $stmt->close();
 }
 ?>
 <!doctype html>

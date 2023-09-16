@@ -4,7 +4,7 @@ $ext = towrealarray2($_POST);
 $headers = "MIME-Version: 1.0" . "\r\n";
 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 $headers .= 'From: <artdarshan info@artdarshan.com>' . "\r\n";
-$to="amproapk@gmail.com";
+$to="artdarshancomp@gmail.com";
 $message= json_encode($ext['contact']);
 mail($to,"message",$message,$headers);          
 }
@@ -39,7 +39,7 @@ mail($to,"message",$message,$headers);
               <div class="list-contact-info col-xs-12">
                 <div class="contact_info_item col-xs-6">
                  <h3>address</h3>
-                  <p>Tughlakabad village New Delhi (110044) </p>
+                  <p>35A, 6, Tughlakabad Extension, Tughlakabad, New Delhi, Delhi 110019</p>
                  
                 </div>
                 <div class="contact_info_item col-xs-6">
@@ -58,7 +58,7 @@ mail($to,"message",$message,$headers);
                 
                   <div class="contact_info_item col-xs-6">
                     <h3>Additional Information</h3>
-                    <p>We are open: Monday - Saturday, 10AM - 8PM and closed on Sunday sorry for that.</p>
+                    <p>We are open: Monday - Saturday, 10AM - 8PM and closed on Sunday.</p>
                   </div>
                    
                 <div class="contact_info_item col-xs-12">

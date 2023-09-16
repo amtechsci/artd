@@ -52,17 +52,25 @@ if(isset($_POST['submit'])){
 	if($msg==''){
 		if(isset($_GET['id']) && $_GET['id']!=''){
 			if($_FILES['image']['name']!=''){
-				$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
+				$image=time().rand(111111111,999999999).'_'.$_FILES['image']['name'];
 				//move_uploaded_file($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$image);
 				imageCompress($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$image);
+				$checkp = explode('.',$image);
+                $check = end($checkp);
+                $check = strtolower($check);
+				$image = str_replace($check,'webp',$image);
 				mysqli_query($con,"update banner set heading1='$heading1',heading2='$heading2',btn_txt='$btn_txt',btn_link='$btn_link',image='$image',order_no='$order_no' where id='$id'");
 			}else{
 				mysqli_query($con,"update banner set heading1='$heading1',heading2='$heading2',btn_txt='$btn_txt',btn_link='$btn_link',order_no='$order_no'  where id='$id'");
 			}
 		}else{
-			$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
+			$image=time().rand(111111111,999999999).'_'.$_FILES['image']['name'];
 			//move_uploaded_file($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$image);
 			imageCompress($_FILES['image']['tmp_name'],BANNER_SERVER_PATH.$image);
+			$checkp = explode('.',$image);
+                $check = end($checkp);
+                $check = strtolower($check);
+				$image = str_replace($check,'webp',$image);
 			mysqli_query($con,"insert into banner(heading1,heading2,btn_txt,btn_link,image,status,order_no) values('$heading1','$heading2','$btn_txt','$btn_link','$image','1','$order_no')");
 		}
 		header('location:banner.php');

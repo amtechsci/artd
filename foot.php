@@ -12,15 +12,12 @@
                   
                   <div class="feature-row__image-wrapper js">
                     <div class="img-block">
-                      <a href="index.php">
-                        <img 
-                        class="feature-row__image lazyload"
-                        src="art/logo1.png"
-                        data-src=""
+                      <a href="index.php"  style="display: flex;justify-content: center;">
+                        <img class="feature-row__image lazyload" src="art/logo1.png" data-src=""
                         data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
                         data-aspectratio="2.9107142857142856"
                         data-sizes="auto"
-                        alt="" style="width:15%;">
+                        alt="" style="width:15%!important;">
                       </a>
                     </div>
                   </div>
@@ -114,7 +111,7 @@
                       <li class="site-footer__linklist-item shop-address col-xs-12 col-md-12">
                           <i class="fa fa-map-marker" aria-hidden="true"></i>
                           <div class="content">
-                            <p>Plot No. 23, Second Floor Jalam Mohalla Tughlakabad Village New Delhi (110044) </p>
+                            <p>35A, 6, Tughlakabad Extension, Tughlakabad, New Delhi, Delhi 110019</p>
                             
                           </div>  
                       </li>

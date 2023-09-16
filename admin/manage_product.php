@@ -34,14 +34,14 @@ $attrProduct[0]['atr_id']='';
 
 
 if(isset($_GET['pi']) && $_GET['pi']>0){
-	$pi=get_safe_value($con,$_GET['pi']);
+	$pi=towrealarray2($_GET['pi']);
 	$delete_sql="delete from product_images where id='$pi'";
 	mysqli_query($con,$delete_sql);
 }
 
 if(isset($_GET['id']) && $_GET['id']!=''){
 	$image_required='';
-	$id=get_safe_value($con,$_GET['id']);
+	$id=towrealarray2($_GET['id']);
 	$res=mysqli_query($con,"select * from product where id='$id' $condition1");
 	$check=mysqli_num_rows($res);
 	if($check>0){
@@ -91,18 +91,18 @@ if(isset($_GET['id']) && $_GET['id']!=''){
 
 if(isset($_POST['submit'])){
 	// prx($_POST);
-	$categories_id=get_safe_value($con,$_POST['categories_id']);
-	$sub_categories_id=get_safe_value($con,$_POST['sub_categories_id']);
-	$name=get_safe_value($con,$_POST['name']);
-	/*$mrp=get_safe_value($con,$_POST['mrp']);
-	$price=get_safe_value($con,$_POST['price']);
-	$qty=get_safe_value($con,$_POST['qty']);*/
-	$short_desc=get_safe_value($con,$_POST['short_desc']);
-	$description=get_safe_value($con,$_POST['description']);
-	$meta_title=get_safe_value($con,$_POST['meta_title']);
-	$meta_desc=get_safe_value($con,$_POST['meta_desc']);
-	$meta_keyword=get_safe_value($con,$_POST['meta_keyword']);
-	$best_seller=get_safe_value($con,$_POST['best_seller']);
+	$categories_id=towrealarray2($_POST['categories_id']);
+	$sub_categories_id=towrealarray2($_POST['sub_categories_id']);
+	$name=towrealarray2($_POST['name']);
+	/*$mrp=towrealarray2($_POST['mrp']);
+	$price=towrealarray2($_POST['price']);
+	$qty=towrealarray2($_POST['qty']);*/
+	$short_desc=towrealarray2($_POST['short_desc']);
+	$description=towrealarray2($_POST['description']);
+	$meta_title=towrealarray2($_POST['meta_title']);
+	$meta_desc=towrealarray2($_POST['meta_desc']);
+	$meta_keyword=towrealarray2($_POST['meta_keyword']);
+	$best_seller=towrealarray2($_POST['best_seller']);
 	
 	$res=mysqli_query($con,"select product.* from product where product.name='$name' $condition1");
 	$check=mysqli_num_rows($res);
@@ -144,18 +144,24 @@ if(isset($_POST['submit'])){
 	if($msg==''){
 		if(isset($_GET['id']) && $_GET['id']!=''){
 			if($_FILES['image']['name']!=''){
-				$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
-				//move_uploaded_file($_FILES['image']['tmp_name'],PRODUCT_IMAGE_SERVER_PATH.$image);
+				$image=time().rand(111111111,999999999).'_'.$_FILES['image']['name'];
 				imageCompress($_FILES['image']['tmp_name'],PRODUCT_IMAGE_SERVER_PATH.$image);
+				$checkp = explode('.',$image);
+                $check = end($checkp);
+                $check = strtolower($check);
+				$image = str_replace($check,'webp',$image);
 				$update_sql="update product set categories_id='$categories_id',name='$name',short_desc='$short_desc',description='$description',meta_title='$meta_title',meta_desc='$meta_desc',meta_keyword='$meta_keyword',image='$image',best_seller='$best_seller',sub_categories_id='$sub_categories_id' where id='$id'";
 			}else{
 				$update_sql="update product set categories_id='$categories_id',name='$name',short_desc='$short_desc',description='$description',meta_title='$meta_title',meta_desc='$meta_desc',meta_keyword='$meta_keyword',best_seller='$best_seller',sub_categories_id='$sub_categories_id' where id='$id'";
 			}
 			mysqli_query($con,$update_sql);
 		}else{
-			$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
-			//move_uploaded_file($_FILES['image']['tmp_name'],PRODUCT_IMAGE_SERVER_PATH.$image);
+			$image=time().rand(111111111,999999999).'_'.$_FILES['image']['name'];
 			imageCompress($_FILES['image']['tmp_name'],PRODUCT_IMAGE_SERVER_PATH.$image);
+				$checkp = explode('.',$image);
+                $check = end($checkp);
+                $check = strtolower($check);
+				$image = str_replace($check,'webp',$image);
 		
 			mysqli_query($con,"insert into product(categories_id,name,short_desc,description,meta_title,meta_desc,meta_keyword,status,image,best_seller,sub_categories_id,added_by) values('$categories_id','$name','$short_desc','$description','$meta_title','$meta_desc','$meta_keyword',1,'$image','$best_seller','$sub_categories_id','".$_SESSION['ADMIN_ID']."')");
 			$id=mysqli_insert_id($con);
@@ -168,14 +174,20 @@ if(isset($_POST['submit'])){
 				foreach($_FILES['product_images']['name'] as $key=>$val){
 				if($_FILES['product_images']['name'][$key]!=''){
 					if(isset($_POST['product_images_id'][$key])){
-						$image=rand(111111111,999999999).'_'.$_FILES['product_images']['name'][$key];
-						//move_uploaded_file($_FILES['product_images']['tmp_name'][$key],PRODUCT_MULTIPLE_IMAGE_SERVER_PATH.$image);
+						$image=time().rand(111111111,999999999).'_'.$_FILES['product_images']['name'][$key];
 						imageCompress($_FILES['product_images']['tmp_name'][$key],PRODUCT_MULTIPLE_IMAGE_SERVER_PATH.$image);
+				$checkp = explode('.',$image);
+                $check = end($checkp);
+                $check = strtolower($check);
+				$image = str_replace($check,'webp',$image);
 						mysqli_query($con,"update product_images set product_images='$image' where id='".$_POST['product_images_id'][$key]."'");
 					}else{
-						$image=rand(111111111,999999999).'_'.$_FILES['product_images']['name'][$key];
-						//move_uploaded_file($_FILES['product_images']['tmp_name'][$key],PRODUCT_MULTIPLE_IMAGE_SERVER_PATH.$image);
+						$image=time().rand(111111111,999999999).'_'.$_FILES['product_images']['name'][$key];
 						imageCompress($_FILES['product_images']['tmp_name'][$key],PRODUCT_MULTIPLE_IMAGE_SERVER_PATH.$image);
+				$checkp = explode('.',$image);
+                $check = end($checkp);
+                $check = strtolower($check);
+				$image = str_replace($check,'webp',$image);
 						mysqli_query($con,"insert into product_images(product_id,product_images) values('$id','$image')");
 					}
 				}
@@ -186,9 +198,12 @@ if(isset($_POST['submit'])){
 			if(isset($_FILES['product_images']['name'])){
 				foreach($_FILES['product_images']['name'] as $key=>$val){
 					if($_FILES['product_images']['name'][$key]!=''){
-						$image=rand(111111111,999999999).'_'.$_FILES['product_images']['name'][$key];
-						//move_uploaded_file($_FILES['product_images']['tmp_name'][$key],PRODUCT_MULTIPLE_IMAGE_SERVER_PATH.$image);
+						$image=time().rand(111111111,999999999).'_'.$_FILES['product_images']['name'][$key];
 						imageCompress($_FILES['product_images']['tmp_name'][$key],PRODUCT_MULTIPLE_IMAGE_SERVER_PATH.$image);
+				$checkp = explode('.',$image);
+                $check = end($checkp);
+                $check = strtolower($check);
+				$image = str_replace($check,'webp',$image);
 						mysqli_query($con,"insert into product_images(product_id,product_images) values('$id','$image')");
 					}
 				}
@@ -201,12 +216,12 @@ if(isset($_POST['submit'])){
 		
 		if(isset($_POST['mrp'])){
 			foreach($_POST['mrp'] as $key=>$val){
-				$mrp=get_safe_value($con,$_POST['mrp'][$key]);
-				$price=get_safe_value($con,$_POST['price'][$key]);
-				// $qty=get_safe_value($con,$_POST['qty'][$key]);
-				$size_id=get_safe_value($con,$_POST['size_id'][$key]);
-				// $color_id=get_safe_value($con,$_POST['color_id'][$key]);
-				$attr_id=get_safe_value($con,$_POST['attr_id'][$key]);
+				$mrp=towrealarray2($_POST['mrp'][$key]);
+				$price=towrealarray2($_POST['price'][$key]);
+				// $qty=towrealarray2($_POST['qty'][$key]);
+				$size_id=towrealarray2($_POST['size_id'][$key]);
+				// $color_id=towrealarray2($_POST['color_id'][$key]);
+				$attr_id=towrealarray2($_POST['attr_id'][$key]);
 				
 				if($attr_id>0){
 					mysqli_query($con,"update product_attributes set size_id='$size_id',mrp='$mrp',price='$price' where atr_id='$attr_id'");
@@ -268,12 +283,12 @@ if(isset($_POST['submit'])){
 											<label for="categories" class=" form-control-label">View In</label>
 											<select class="form-control" name="best_seller" required>
 												<option value=''>Select</option>
-												<option value="1">Special Collection</option>
-														<option value="2">My Product</option>
-														<option value="3">Featured Collection</option>
-														<option value="4">Corporate Gifting</option>
-														<option value="5">Excivsive Collection</option>
-														<option value="6">Latest Collection</option>
+												<option value="1" <?php if($best_seller == 1){echo 'selected';} ?>>Home page m jo category h usmay</option>
+														<option value="2" <?php if($best_seller == 2){echo 'selected';} ?>>EXCIVSIVE COLLECTION</option>
+    														<option value="3" <?php if($best_seller == 3){echo 'selected';} ?>>FEATURED COLLECTION</option>
+														<option value="4" <?php if($best_seller == 4){echo 'selected';} ?>>CORPORATE GIFTING</option>
+														<option value="5" <?php if($best_seller == 5){echo 'selected';} ?>>SPECIAL COLLECTION</option>
+														<option value="6" <?php if($best_seller == 6){echo 'selected';} ?>>LATEST COLLECTION</option>
 											</select>
 										  </div>
 									</div>

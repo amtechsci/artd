@@ -24,14 +24,24 @@ foreach($cartv as $cada){
                 $prof['qty'] = $cada['qty'];
                 $proaa[] = $prof;
 }
-// print_r("INSERT INTO `orders`(`user_id`, `address_id`,`payment_type`,`total_price`,`payment_status`,`order_status`) VALUES ('{$user['id']}','{$ext['address']}','COD','cash','{$total}','pending','pending')");
-// exit;
-$order_id = towquery2("INSERT INTO `orders`(`user_id`, `address_id`,`payment_type`,`total_price`,`payment_status`,`order_status`) VALUES ('{$user['id']}','{$ext['address']}','COD','{$total}','pending','pending')");
+$order_id = towquery2("INSERT INTO `orders`(`user_id`, `address_id`,`payment_type`,`total_price`,`payment_status`,`order_status`) VALUES ('{$user['id']}','{$ext['address']}','{$ext['payment_method']}','{$total}','pending','pending')");
 foreach($proaa as $proa){
 towquery("INSERT INTO `order_detail`(`order_id`, `product_id`, `pro_atr_id`, `qty`, `price`) VALUES ('$order_id','{$proa['id']}','{$proa['id']}','{$proa['qty']}','{$proa['price']}')");
 towquery("DELETE FROM `carts` WHERE customer_id='{$user['id']}' AND pro_id='{$proa['id']}'");
 }
+$ext = towrealarray($_POST); extract($ext);
+$headers = "MIME-Version: 1.0" . "\r\n";
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+$headers .= 'From: <artdarshan info@artdarshan.com>' . "\r\n";
+$to="artdarshancomp@gmail.com";
+$message="you have an order";
+mail($to,"you have an order",$message,$headers);       
+
+if($_POST['payment_method'] == 'ONLINE'){
 print_r("<script>window.location.replace('checkout.php?order_id=$order_id');</script>");
+}else{
+print_r("<script>window.location.replace('thankyou.php');</script>");
+}
 }
 }elseif($_GET['order_id']){
     $order_id = towreal($_GET['order_id']);
@@ -170,7 +180,7 @@ $razorpayOrderId = $razorpayOrder['id'];
 $_SESSION['razorpay_order_id'] = $razorpayOrderId;
 $displayAmount = $amount = $orderData['amount'];
 ?>
-<button id="rzp-button1">Pay</button>
+<button id="rzp-button1" style="opacity: 0;">Pay</button>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 var options = {
@@ -198,13 +208,7 @@ var options = {
 };
 var rzp1 = new Razorpay(options);
 rzp1.on('payment.failed', function (response){
-        // console.log(response);
-        // alert(response.error.description);
-        // alert(response.error.source);
-        // alert(response.error.step);
-        // alert(response.error.reason);
-        // alert(response.error.metadata.order_id);
-        // alert(response.error.metadata.payment_id);
+    window.location.replace('https://artdarshan.com/thankyou.php');
 });
 document.getElementById('rzp-button1').onclick = function(e){
     rzp1.open();

@@ -70,7 +70,7 @@ include 'head2.php';
                 <p class="forgot"><a href="#recover" id="RecoverPassword">Forget Your Password?</a></p>
               <input type="submit" class="btn" value="LOG IN">
               <p class="new-account">
-                <span>New to Artdarshan? </span> <a href="register.php" id="customer_register_link">Create account</a>
+                <span>New to Artdarshan? </span> <a href="register.php" id="customer_register_link" style="color:blue;">Create account</a>
               </p>
             </div>
           </div>

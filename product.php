@@ -5,7 +5,10 @@ if(!isset($_GET['id'])){
 $id = towreal($_GET['id']);
 $spro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id,categories.categories as cat_name,categories.id as cat_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id INNER JOIN categories ON categories.id=product.categories_id WHERE product.id=$id");
 $sprof = towfetch($spro);
-?>  
+?>
+<style>
+    .owl-carousel {display:block;}
+</style>
 <div class="breadcrumb-container" style="background#e9e8eb;">
     <nav class="breadcrumbs page-width breadcrumbs-empty">
        <a href="/" title="Back to the frontpage">Home</a>
@@ -72,7 +75,10 @@ $sprof = towfetch($spro);
                   </span>
             </div>
             <br>
-              With Frame
+              <?php $sc = towquery("SELECT * FROM `sub_categories` WHERE id='{$sprof['sub_categories_id']}'");
+              if(townum($sc) > 0){
+                echo towfetch($sc)['sub_categories'];
+                }?>
           </div>
             <p itemprop="brand" class="product-single__vendor">Product Type : <span>Painting</span></p>
             <p itemprop="brand" class="product-single__vendor">dimension : <span class="btn" style="background: #000;color: #fff;"><?=$sprof['size_id']?></span></p>
@@ -209,108 +215,110 @@ $sprof = towfetch($spro);
       </header>
       
       
-       
-      <div id="relatedproduct-carousel" class="products-display slider grid grid--uniform grid--view-items owl-carousel owl-theme"> 
+   
 <?php
 $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE categories_id={$sprof['cat_id']} ORDER BY id DESC");
 $i=1;
         while($prof = towfetch($pro)){
 ?>
-<div class="grid__item ">
-                            <div class="item grid__item grid__item--1577101384762 ">
-                                <div class="grid-view-item">
-                                    <div class="grid-view-item__link grid-view-item__image-container">
-                                        <div class="grid-view-item__image-wrapper js">
-                                        <a href="product.php?id=<?=$prof['id']?>">
-                                          <div class="image-inner">
-                                            <div class="reveal">
-                                              <img class="grid-view-item__image lazyload  main-img " src="/upload/<?=$prof['image']?>"
-                                               alt="Artdarshan">
-                                                  <img class="extra-img" src="/upload/<?=$prof['image']?>" alt="Artdarshan" />
-                                            </div>
-                                          </div>
-                                        </a>
-                                      </div>
-                                      <div class="product-description">
-                                          <div class="h4 grid-view-item__title"><?=$prof['name']?></div>
-                                        <div class="grid-view-item__meta">
-                                            <span class="visually-hidden">Regular Price</span>
-                                            <span class="qv-discountprice regular" style="text-decoration: line-through;"><?=$prof['mrp']?></span>
-                                            <span class="product-price__price product-price__sale">
-                                                <span class="qv-regularprice is-bold"><?=$prof['price']?></span>
-                                            </span>
-                                        </div>
-                                        <div class="product-block-hover grid-hover">
-                                          <div class="nm-cartmain add_to_cart_main grid-cart">
-                                              <div class="product-form__item product-form__item--submit">
-                                                <a onclick="add_to_cart(this,'<?=$prof['id']?>')" class="qv-addToCart addToCart enable btn" >
-                                                <span class="value instock add_to_cart add_to_cart_<?=$prof['id']?>">
-                                                  Add To Cart
-                                                </span>
-                                                <span class="adding adding<?=$prof['id']?>">
-                                                 adding...
-                                               </span>
-                                                </a>
-                                              </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-</div>
-<?php  if($i == 6){break;} $i++;} ?>
+<div class="col-12 col-md-3">
+    <div class="grid-view-item__image-wrapper js">
+        <a href="product.php?id=<?=$prof['id']?>">
+          <div class="image-inner">
+            <div class="reveal">
+              <img 
+               class="grid-view-item__image lazyload  main-img "
+               src="/upload/<?=$prof['image']?>"
+               alt="Artdarshan">
+               <?php $eximg = towquery("SELECT * FROM `product_images` WHERE product_id='{$prof['id']}'");
+               if(townum($eximg) > 0){
+                     $eximgf = towfetch($eximg)['product_images'];
+               }else{
+                   $eximgf = $prof['image'];
+               }
+               ?>
+               <img class="extra-img" src="/upload/<?=$eximgf?>" alt="Artdarshan" />
+            </div>
+          </div>
+        </a>
       </div>
-      <div id="relatedproduct-carousel" class="products-display slider grid grid--uniform grid--view-items owl-carousel owl-theme"> 
+      <div class="product-description">
+        <a href="product.php?id=<?=$prof['id']?>">
+          <div class="product-detail">
+            <div class="h4 grid-view-item__title"><?php $out = strlen($prof['name']) > 20 ? substr($prof['name'],0,20)."..." : $prof['name']; echo $out;?></div> <?=$prof['size_id'];?>           
+          </div> 
+        </a>
+
+        <div class="product-block">
+          <div class="nm-cartmain add_to_cart_main grid-cart">
+              <div class="product-form__item product-form__item--submit">
+                <b onclick="add_to_cart(this,'<?=$prof['id']?>')" class="addToCart enable btn">
+                    <span class="value instock add_to_cart add_to_cart_<?=$prof['id']?>">
+                  <span class="value">
+                       ADD TO CART
+                  </span>
+                  </span>
+                  <span class="adding adding<?=$prof['id']?>">
+                     adding...
+                   </span>
+                </b>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
+<?php  if($i == 6){break;} $i++;} ?>
 <?php
 // $pro = towquery("SELECT product.*,product_attributes.mrp,product_attributes.price,product_attributes.size_id FROM `product` INNER JOIN product_attributes ON product_attributes.product_id=product.id WHERE categories_id={$sprof['cat_id']} ORDER BY id DESC");
         while($prof = towfetch($pro)){
 ?>
-<div class="grid__item ">
-                            <div class="item grid__item grid__item--1577101384762 ">
-                                <div class="grid-view-item">
-                                    <div class="grid-view-item__link grid-view-item__image-container">
-                                        <div class="grid-view-item__image-wrapper js">
-                                        <a href="product.php?id=<?=$prof['id']?>">
-                                          <div class="image-inner">
-                                            <div class="reveal">
-                                              <img class="grid-view-item__image lazyload  main-img " src="/upload/<?=$prof['image']?>"
-                                               alt="Artdarshan">
-                                                  <img class="extra-img" src="/upload/<?=$prof['image']?>" alt="Artdarshan" />
-                                            </div>
-                                          </div>
-                                        </a>
-                                      </div>
-                                      <div class="product-description">
-                                          <div class="h4 grid-view-item__title"><?=$prof['name']?></div>
-                                        <div class="grid-view-item__meta">
-                                            <span class="visually-hidden">Regular Price</span>
-                                            <span class="qv-discountprice regular" style="text-decoration: line-through;"><?=$prof['mrp']?></span>
-                                            <span class="product-price__price product-price__sale">
-                                                <span class="qv-regularprice is-bold"><?=$prof['price']?></span>
-                                            </span>
-                                        </div>
-                                        <div class="product-block-hover grid-hover">
-                                          <div class="nm-cartmain add_to_cart_main grid-cart">
-                                              <div class="product-form__item product-form__item--submit">
-                                                <a onclick="add_to_cart(this,'<?=$prof['id']?>')" class="qv-addToCart addToCart enable btn" >
-                                                <span class="value instock add_to_cart add_to_cart_<?=$prof['id']?>">
-                                                  Add To Cart
-                                                </span>
-                                                <span class="adding adding<?=$prof['id']?>">
-                                                 adding...
-                                               </span>
-                                                </a>
-                                              </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-</div>
-<?php } ?>
+<div class="col-12 col-md-3">
+    <div class="grid-view-item__image-wrapper js">
+        <a href="product.php?id=<?=$prof['id']?>">
+          <div class="image-inner">
+            <div class="reveal">
+              <img 
+               class="grid-view-item__image lazyload  main-img "
+               src="/upload/<?=$prof['image']?>"
+               alt="Artdarshan">
+               <?php $eximg = towquery("SELECT * FROM `product_images` WHERE product_id='{$prof['id']}'");
+               if(townum($eximg) > 0){
+                     $eximgf = towfetch($eximg)['product_images'];
+               }else{
+                   $eximgf = $prof['image'];
+               }
+               ?>
+               <img class="extra-img" src="/upload/<?=$eximgf?>" alt="Artdarshan" />
+            </div>
+          </div>
+        </a>
       </div>
+      <div class="product-description">
+        <a href="product.php?id=<?=$prof['id']?>">
+          <div class="product-detail">
+            <div class="h4 grid-view-item__title"><?php $out = strlen($prof['name']) > 20 ? substr($prof['name'],0,20)."..." : $prof['name']; echo $out;?></div> <?=$prof['size_id'];?>           
+          </div> 
+        </a>
+
+        <div class="product-block">
+          <div class="nm-cartmain add_to_cart_main grid-cart">
+              <div class="product-form__item product-form__item--submit">
+                <b onclick="add_to_cart(this,'<?=$prof['id']?>')" class="addToCart enable btn">
+                    <span class="value instock add_to_cart add_to_cart_<?=$prof['id']?>">
+                  <span class="value">
+                       ADD TO CART
+                  </span>
+                  </span>
+                  <span class="adding adding<?=$prof['id']?>">
+                     adding...
+                   </span>
+                </b>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
+<?php } ?>
     </div>
   </aside>
 </div>

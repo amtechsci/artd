@@ -1,16 +1,16 @@
 <?php
 session_start();
-$db = mysqli_connect("localhost", "u623876688_artat", "Artat@123", "u623876688_artat");
+$db = mysqli_connect("localhost", "u662313268_artat", "Artat@123", "u662313268_artat");
 function towquery($query)
  {
-   $db = mysqli_connect("localhost", "u623876688_artat", "Artat@123", "u623876688_artat");
+   $db = mysqli_connect("localhost", "u662313268_artat", "Artat@123", "u662313268_artat");
    mysqli_set_charset($db,'utf8');
    $re = mysqli_query($db,$query);
    return $re;
  }
  function towquery2($query)
  {
-   $db = mysqli_connect("localhost", "u623876688_artat", "Artat@123", "u623876688_artat");
+   $db = mysqli_connect("localhost", "u662313268_artat", "Artat@123", "u662313268_artat");
    mysqli_set_charset($db,'utf8');
    $re = mysqli_query($db,$query);
    $re2 = mysqli_insert_id($db);
@@ -33,19 +33,19 @@ function towquery($query)
  }
  function towreal($query)
  {
-   $db = mysqli_connect("localhost", "u623876688_artat", "Artat@123", "u623876688_artat");
-   $re = str_replace("<","<",$query);
-   $re = str_replace(">",">",$re);
+   $db = mysqli_connect("localhost", "u662313268_artat", "Artat@123", "u662313268_artat");
+   $re = str_replace("<","",$query);
+   $re = str_replace(">","",$re);
    $re = mysqli_real_escape_string($db,$re);
    return $re;
  }
  function towrealarray($query)
  {
-   $db = mysqli_connect("localhost", "u623876688_artat", "Artat@123", "u623876688_artat");
+   $db = mysqli_connect("localhost", "u662313268_artat", "Artat@123", "u662313268_artat");
    $re = array();
    foreach ($query as $key => $value) {
-   $$key = str_replace("<","<",$value);
-   $$key = str_replace(">",">",$$key);
+   $$key = str_replace("<","",$value);
+   $$key = str_replace(">","",$$key);
    $$key = mysqli_real_escape_string($db,$$key);
 
    $re[$key] = $$key;
@@ -54,12 +54,12 @@ function towquery($query)
  }
  function towrealarray2($query)
  {
-   $co = mysqli_connect("localhost", "u623876688_artat", "Artat@123", "u623876688_artat");
+   $co = mysqli_connect("localhost", "u662313268_artat", "Artat@123", "u662313268_artat");
    $re = array();
    foreach ($query as $key => $value) {
        if(!is_array($value)){
-   $$key = str_replace("<","<",$value);
-   $$key = str_replace(">",">",$$key);
+   $$key = str_replace("<","",$value);
+   $$key = str_replace(">","",$$key);
    $$key = mysqli_real_escape_string($co,$$key);
 
    $re[$key] = $$key;

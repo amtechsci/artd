@@ -86,7 +86,6 @@ include_once 'head.php';
 .cart .cart__footer .cart-bottm .cart_calculator .cart_content_inner {
     background: #fff;
     padding: 20px 0;
-    width: 400px;
 }.cart .cart__footer .cart-bottm .cart_calculator .cart_content_inner .cart_total_title span {
     padding: 10px 20px;
     color: #3a3838;
@@ -110,9 +109,23 @@ include_once 'head.php';
     color: #fff;
     border-color: #151515;
 }
+
+@media (max-width: 610px) {
+  .cart .cart__footer .cart-bottm {
+    padding: 20px 10px;
+    padding-right: 0;
+    margin-top: 30px;
+    display: block;
+    overflow: hidden;
+}
+.cart .cart__footer .cart-bottm .cart_calculator {
+    float: right;
+    padding: 10px;
+    background: #f8f8f8;
+}
+}
 </style>
-</div>
-</div>
+
       <div class="page-container" id="PageContainer">
         <main class="main-content" id="MainContent" role="main">
 <div id="shopify-section-cart-template" class="shopify-section">
@@ -169,20 +182,14 @@ include_once 'head.php';
               </td>
               <td class="cart__meta  cart-flex-item">
                 <div class="list-view-item__title">
-                    <img src="/upload/<?=$prof['image']?>">
+                    <img src="/upload/<?=$prof['image']?>" alt="<?=$prof['name']?>">
                 </div>
               </td>
               <td class="cart__price-wrapper cart-flex-item product-price">
                 ₹<?=$prof['price']?>
-                <div class="cart__edit medium-up--hide">
-                  <button type="button" class="btn btn--secondary btn--small js-edit-toggle cart__edit--active" data-target="line1">
-                    <span class="cart__edit-text--edit"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-                    <span class="cart__edit-text--cancel"><i class="fa fa-times" aria-hidden="true"></i></span>
-                  </button>
-                </div>
               </td>
               <td class="cart__update-wrapper cart-flex-item product-quantity">                
-                <div class="cart__qty cart-qty-btns">
+                <div class="cart__qty cart-qty-btns" style="display: flex;align-items: center;justify-content: space-around;align-content: center;flex-wrap: nowrap;">
                   <label for="updates_32674185576532:2d28a6382b9fac92e4792029d065476c" class="cart__qty-label">Quantity</label>
                   <div class="dec button qtyminus" onclick="sub(<?=$cada['pro_id']?>)">-</div>
                     <input class="cart__qty-input quantity update-cart" name="qty" value="<?=$cada['qty']?>" min="0" id="card-<?=$cada['pro_id']?>">
@@ -206,9 +213,9 @@ include_once 'head.php';
       <footer class="cart__footer">
         <div class="grid">
           <div class="cart-bottm">
-            <div class="continue_shopping">
-               <a href="/collections" class="btn btn--secondary cart__continue cart__continue--large">Continue Shopping</a>
-            </div>
+            <!--<div class="continue_shopping">-->
+            <!--   <a href="/shop.php" class="btn btn--secondary cart__continue cart__continue--large">Continue Shopping</a>-->
+            <!--</div>-->
             <div class=" cart_calculator">
               <div class="cart_content_inner">
                 <div class="cart_total_title">
@@ -217,7 +224,7 @@ include_once 'head.php';
                 </div>
                 
                 <div class="cart__shipping">Shipping &amp; taxes calculated at checkout</div>
-                <a href="select_address.php"><input type="button" name="checkout" class="btn btn--small-wide checkout_btn" value="Continue"></a>
+                <a href="select_address.php"><input type="button" name="checkout" class="btn btn--small-wide checkout_btn" value="Check-out"></a>
                 
               </div>
             </div>
